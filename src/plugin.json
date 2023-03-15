@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "Toggltrack",
+  "id": "ifrost-toggltrack-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_toggltrack",
+  "info": {
+    "description": "Toggl track plugin for grafana",
+    "author": {
+      "name": "ifrost"
+    },
+    "keywords": ["datasource"],
+    "logos": {
+      "small": "img/toggl-track-logo.png",
+      "large": "img/toggl-track-logo.png"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": "^9.3.8",
+    "plugins": []
+  }
+}
