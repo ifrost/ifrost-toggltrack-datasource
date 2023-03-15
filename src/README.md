@@ -6,7 +6,7 @@ This is a [Toggl Track](https://track.toggl.com/) plugin for Grafana
 
 All you need is API token. You can find it on your [profile](https://track.toggl.com/profile) page. Scroll to the bottom, click to reveal and copy the token.
 
-![Toggl Track API Token](./src/img/toggl-api-token.png)
+![Toggl Track API Token](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/toggl-api-token.png)
 
 Add the token in Toggl Track data source settings
 
@@ -14,7 +14,7 @@ Add the token in Toggl Track data source settings
 
 By default, the editor loads all time entries. 
 
-![Toggl Track Query Editor](./src/img/editor.png)
+![Toggl Track Query Editor](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/editor.png)
 
 ### Filtering
 
@@ -27,8 +27,8 @@ Narrow down the results by providing:
 
 Aggregate time entries by day and split them by project by selecting chaining mode to "totals":
 
-![Toggl Track Query Editor modes](./src/img/modes.png)
+![Toggl Track Query Editor modes](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/modes.png)
 
 #### Build a dashboard
 
-![Toggl Track Query Editor modes](./src/img/dashboard.png)
+![Toggl Track Query Editor modes](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/dashboard.png)
