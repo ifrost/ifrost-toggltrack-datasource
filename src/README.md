@@ -31,4 +31,6 @@ Aggregate time entries changing the mode:
 
 #### Build a dashboard
 
+[Example](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/data/dashboard.json)
+
 ![Toggl Track Query Editor modes](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/dashboard.png)

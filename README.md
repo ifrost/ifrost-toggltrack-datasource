@@ -25,10 +25,12 @@ Narrow down the results by providing:
 
 ### Aggregations
 
-Aggregate time entries by day and split them by project by selecting chaining mode to "totals":
+Aggregate time entries changing the mode:
 
 ![Toggl Track Query Editor modes](./src/img/modes.png)
 
 #### Build a dashboard
+
+[Example](./src/data/dashboard.json)
 
 ![Toggl Track Query Editor modes](./src/img/dashboard.png)
