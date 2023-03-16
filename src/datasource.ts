@@ -7,9 +7,8 @@ import {
 } from '@grafana/data';
 import { DataSourceWithBackend } from '@grafana/runtime';
 
-import { DEFAULT_QUERY, QueryMode, TogglTrackDataSourceOptions, TogglTrackProject, TogglTrackQuery } from './types';
+import { DEFAULT_QUERY, TogglTrackDataSourceOptions, TogglTrackProject, TogglTrackQuery } from './types';
 import { from, lastValueFrom, Observable } from 'rxjs';
-import { groupBy } from 'lodash';
 import { enrichRawResults, processToEntriesList, processToTotals } from './utils';
 
 export class DataSource extends DataSourceWithBackend<TogglTrackQuery, TogglTrackDataSourceOptions> {
@@ -27,34 +26,25 @@ export class DataSource extends DataSourceWithBackend<TogglTrackQuery, TogglTrac
     const responsePromise = lastValueFrom(super.query(request));
     const projectsPromise = this.getProjects();
 
-    const queryByMode = groupBy(request.targets, 'mode');
-    let refIdsByMode: Record<string, string[]> = {};
-    Object.keys(queryByMode).forEach((mode) => {
-      refIdsByMode[mode] = queryByMode[mode].map((query: TogglTrackQuery) => query.refId);
-    });
-
     return from(
       Promise.all([responsePromise, projectsPromise]).then(
         ([response, projects]: [DataQueryResponse, TogglTrackProject[]]) => {
           const rawDataFrames = enrichRawResults(response.data, projects);
           let processedDataFrames: MutableDataFrame[] = [];
-          let filteredFrames: MutableDataFrame[] = [];
 
-          const filterByMode = (
-            mode: QueryMode,
-            handler: (filteredDataFrames: MutableDataFrame[]) => MutableDataFrame[]
-          ) => {
-            if (!refIdsByMode[mode]) {
-              return;
-            }
-            filteredFrames = rawDataFrames.filter((dataFrame) => refIdsByMode[mode].includes(dataFrame.refId || ''));
-            processedDataFrames = [...processedDataFrames, ...handler(filteredFrames)];
-          };
-
-          filterByMode('entries', (filteredDataFrames) => processToEntriesList(filteredDataFrames));
-          filterByMode('totals', (filteredDataFrames) =>
-            processToTotals(filteredDataFrames, request.range.from, request.range.to)
-          );
+          request.targets.forEach((query) => {
+            const filteredDataFrames = rawDataFrames.filter((dataFrame) => query.refId === dataFrame.refId);
+            const newDataFrames = query.aggregate
+              ? processToTotals(
+                  filteredDataFrames,
+                  request.range.from,
+                  request.range.to,
+                  query.aggregate.amount,
+                  query.aggregate.unit
+                )
+              : processToEntriesList(filteredDataFrames);
+            processedDataFrames = [...processedDataFrames, ...newDataFrames];
+          });
 
           response.data = processedDataFrames;
 

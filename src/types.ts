@@ -1,19 +1,20 @@
-import { DataQuery, DataSourceJsonData } from '@grafana/data';
+import { DataQuery, DataSourceJsonData, DurationUnit } from '@grafana/data';
 
-export type QueryMode = 'entries' | 'totals';
-
-export const QUERY_MODES: QueryMode[] = ['entries', 'totals'];
+export interface TogglTrackQueryAggregation {
+  amount: number;
+  unit: DurationUnit;
+}
 
 export interface TogglTrackQuery extends DataQuery {
   projects: number[];
   description: string;
-  mode: QueryMode;
+  aggregate?: TogglTrackQueryAggregation;
 }
 
 export const DEFAULT_QUERY: Partial<TogglTrackQuery> = {
   projects: [],
   description: '',
-  mode: 'entries',
+  aggregate: undefined,
 };
 
 export interface TogglTrackDataSourceOptions extends DataSourceJsonData {}

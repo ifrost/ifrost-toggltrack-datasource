@@ -1,1 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 81.9 71.52"><defs><style>.cls-1{fill:#84aff1;}.cls-2{fill:#3865ab;}.cls-3{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" x1="42.95" y1="16.88" x2="81.9" y2="16.88" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f2cc0c"/><stop offset="1" stop-color="#ff9830"/></linearGradient></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M55.46,62.43A2,2,0,0,1,54.07,59l4.72-4.54a2,2,0,0,1,2.2-.39l3.65,1.63,3.68-3.64a2,2,0,1,1,2.81,2.84l-4.64,4.6a2,2,0,0,1-2.22.41L60.6,58.26l-3.76,3.61A2,2,0,0,1,55.46,62.43Z"/><path class="cls-2" d="M37,0H2A2,2,0,0,0,0,2V31.76a2,2,0,0,0,2,2H37a2,2,0,0,0,2-2V2A2,2,0,0,0,37,0ZM4,29.76V8.84H35V29.76Z"/><path class="cls-3" d="M79.9,0H45a2,2,0,0,0-2,2V31.76a2,2,0,0,0,2,2h35a2,2,0,0,0,2-2V2A2,2,0,0,0,79.9,0ZM47,29.76V8.84h31V29.76Z"/><path class="cls-2" d="M37,37.76H2a2,2,0,0,0-2,2V69.52a2,2,0,0,0,2,2H37a2,2,0,0,0,2-2V39.76A2,2,0,0,0,37,37.76ZM4,67.52V46.6H35V67.52Z"/><path class="cls-2" d="M79.9,37.76H45a2,2,0,0,0-2,2V69.52a2,2,0,0,0,2,2h35a2,2,0,0,0,2-2V39.76A2,2,0,0,0,79.9,37.76ZM47,67.52V46.6h31V67.52Z"/><rect class="cls-1" x="10.48" y="56.95" width="4" height="5.79"/><rect class="cls-1" x="17.43" y="53.95" width="4" height="8.79"/><rect class="cls-1" x="24.47" y="50.95" width="4" height="11.79"/><path class="cls-1" d="M19.47,25.8a6.93,6.93,0,1,1,6.93-6.92A6.93,6.93,0,0,1,19.47,25.8Zm0-9.85a2.93,2.93,0,1,0,2.93,2.93A2.93,2.93,0,0,0,19.47,16Z"/></g></g></svg>
+<svg width="34" height="34" viewBox="0 0 35 35">
+    <rect opacity="0.5" x="1.56567" y="2.15002" width="31.6838" height="30.7083" fill="url(#pattern0)"></rect>
+    <rect opacity="0.5" x="0.729736" y="4.84882" width="33.364" height="29.1552" fill="url(#pattern1)"></rect>
+    <path d="M25.3094 0.179688H9.51386C5.39535 0.179688 2.05664 3.61957 2.05664 7.86288V24.1371C2.05664 28.3804 5.39535 31.8203 9.51386 31.8203H25.3094C29.428 31.8203 32.7667 28.3804 32.7667 24.1371V7.86288C32.7667 3.61957 29.428 0.179688 25.3094 0.179688Z"
+          fill="url(#paint0_radial_803_119)"></path>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M17.4267 4.22748C11.1075 4.22748 5.98535 9.5041 5.98535 16.0155C5.98535 22.5268 11.1075 27.8035 17.4267 27.8035C23.7459 27.8035 28.8679 22.5268 28.8679 16.0155C28.8679 9.5041 23.7459 4.22748 17.4267 4.22748Z"
+          fill="#E57CD8"></path>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5854 17.0753H18.2684V8.47369H16.5854V17.0753Z"
+          fill="#2C1338"></path>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M17.4267 22.3487C14.1928 22.3487 11.5693 19.6453 11.5693 16.3129C11.5693 13.5314 13.395 11.1914 15.8795 10.4904V12.2441C14.3016 12.8816 13.1856 14.4624 13.1856 16.3129C13.1856 18.7259 15.085 20.6832 17.4267 20.6832C19.7688 20.6832 21.6684 18.7259 21.6684 16.3129C21.6684 14.4624 20.5515 12.8816 18.9754 12.2441V10.4904C21.4581 11.1914 23.2844 13.5314 23.2844 16.3129C23.2844 19.6453 20.6615 22.3487 17.4267 22.3487Z"
+          fill="#2C1338"></path>
+    <defs>
+        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_803_119" transform="scale(0.00108225 0.00114943)"></use>
+        </pattern>
+        <pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image1_803_119" transform="scale(0.00102775 0.00121065)"></use>
+        </pattern>
+        <radialGradient id="paint0_radial_803_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                        gradientTransform="translate(17.4117 16) rotate(90) scale(15.8203 15.4332)">
+            <stop stop-color="#412A4C"></stop>
+            <stop offset="0.00428027" stop-color="#412A4C"></stop>
+            <stop offset="1" stop-color="#2C1338"></stop>
+        </radialGradient>
+    </defs>
+</svg>

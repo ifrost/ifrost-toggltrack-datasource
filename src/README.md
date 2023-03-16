@@ -25,7 +25,7 @@ Narrow down the results by providing:
 
 ### Aggregations
 
-Aggregate time entries by day and split them by project by selecting chaining mode to "totals":
+Aggregate time entries changing the mode:
 
 ![Toggl Track Query Editor modes](https://raw.githubusercontent.com/ifrost/ifrost-toggltrack-datasource/main/src/img/modes.png)
 

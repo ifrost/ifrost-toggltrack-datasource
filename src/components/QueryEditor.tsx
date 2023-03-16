@@ -2,9 +2,24 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { InlineField, Input, MultiSelect, Select } from '@grafana/ui';
 import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { DataSource } from '../datasource';
-import { TogglTrackDataSourceOptions, TogglTrackQuery, QUERY_MODES, QueryMode } from '../types';
+import { TogglTrackDataSourceOptions, TogglTrackQuery, TogglTrackQueryAggregation } from '../types';
+import { find, isEqual } from 'lodash';
 
 type Props = QueryEditorProps<DataSource, TogglTrackQuery, TogglTrackDataSourceOptions>;
+
+const QUERY_MODES: Array<SelectableValue<TogglTrackQueryAggregation>> = [
+  { label: 'All', value: undefined },
+  { label: 'Daily', value: { amount: 1, unit: 'day' } },
+  { label: 'Weekly', value: { amount: 1, unit: 'week' } },
+  { label: 'Monthly', value: { amount: 1, unit: 'month' } },
+];
+
+const findSelectedMode = (aggregate?: TogglTrackQueryAggregation): SelectableValue<TogglTrackQueryAggregation> => {
+  const mode = find<SelectableValue<TogglTrackQueryAggregation>>(QUERY_MODES, (option) =>
+    isEqual(aggregate, option.value)
+  );
+  return mode || { label: 'Custom', value: aggregate };
+};
 
 export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) {
   const onDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -16,8 +31,8 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
     onRunQuery();
   };
 
-  const onTypeChanged = (mode: SelectableValue<QueryMode>) => {
-    onChange({ ...query, mode: mode.value || QUERY_MODES[0] });
+  const onTypeChanged = (mode: SelectableValue<TogglTrackQueryAggregation>) => {
+    onChange({ ...query, aggregate: mode.value });
     onRunQuery();
   };
 
@@ -37,25 +52,19 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
     run();
   }, [datasource]);
 
-  const { description, projects, mode } = query;
-
-  const queryModes = QUERY_MODES.map((mode) => {
-    return {
-      label: mode,
-      value: mode,
-    };
-  });
+  const { description, projects, aggregate } = query;
+  const selectedMode = findSelectedMode(aggregate);
 
   return (
     <div className="gf-form">
       <InlineField label="Projects">
         <MultiSelect width={30} options={allProjects} value={projects || []} onChange={onProjectsChange} />
       </InlineField>
-      <InlineField label="Description" labelWidth={16} tooltip="Filter entries containing specified description">
+      <InlineField label="Description" labelWidth={16} tooltip="Include entries containing specified description">
         <Input onChange={onDescriptionChange} onBlur={onRunQuery} value={description || ''} />
       </InlineField>
       <InlineField label="Mode">
-        <Select onChange={onTypeChanged} options={queryModes} value={{ label: mode, value: mode }} />
+        <Select onChange={onTypeChanged} options={QUERY_MODES} value={selectedMode} />
       </InlineField>
     </div>
   );
