@@ -223,7 +223,6 @@ func (d *Datasource) query(ctx context.Context, pCtx backend.PluginContext, quer
 	if err != nil {
 		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("json unmarshal: %v", err.Error()))
 	}
-	logger.Info("qq", "ids", qm.ProjectIds, "des", qm.Description)
 
 	////////////
 	startDate := query.TimeRange.From.Format("2006-01-02T15:04:05Z")
