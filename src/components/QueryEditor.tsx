@@ -41,10 +41,10 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
   useEffect(() => {
     const run = async () => {
       const projects = await datasource.getProjects();
-      const selectableProjects = projects.map(({ Id, Name }) => {
+      const selectableProjects = projects.map(({ id, name, clientName }) => {
         return {
-          label: Name,
-          value: Id,
+          label: clientName + ' / ' + name,
+          value: id,
         };
       });
       setAllProjects(selectableProjects);

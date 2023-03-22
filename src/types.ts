@@ -24,11 +24,32 @@ export interface ToggleTrackSecureJsonData {
 }
 
 /**
+ * DTOs coming from backend
+ */
+export type ToggleTrackProjectDTO = {
+  id: number;
+  name: string;
+  client_id: number;
+};
+
+export type ToggleTrackClientDTO = {
+  id: number;
+  name: string;
+};
+
+/**
  * Projects returned from /projects resource
  */
 export type TogglTrackProject = {
-  Id: number;
-  Name: string;
+  id: number;
+  name: string;
+  clientName: string;
+  clientId: number;
+};
+
+export type ToggleTrackClient = {
+  id: number;
+  name: string;
 };
 
 /**
@@ -45,4 +66,6 @@ export type TogglTrackEntry = {
   formatted_duration: string;
   project_id: number;
   project_name: string;
+  client_id: number;
+  client_name: string;
 };

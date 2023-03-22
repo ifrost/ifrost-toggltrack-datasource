@@ -29,17 +29,17 @@ var (
 
 var logger = log.New()
 
-type TogglTrackClient struct {
+type TogglTrackHttpClient struct {
 	client *http.Client
 	url    string
 	log    log.Logger
 }
 
-func newTogglTrackClient(client *http.Client, url string, log log.Logger) *TogglTrackClient {
-	return &TogglTrackClient{client: client, url: url, log: log}
+func newTogglTrackHttpClient(client *http.Client, url string, log log.Logger) *TogglTrackHttpClient {
+	return &TogglTrackHttpClient{client: client, url: url, log: log}
 }
 
-func (c *TogglTrackClient) makeRequest(ctx context.Context, method string, path string) (*http.Response, error) {
+func (c *TogglTrackHttpClient) makeRequest(ctx context.Context, method string, path string) (*http.Response, error) {
 	request, err := http.NewRequestWithContext(ctx, method, c.url+path, nil)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func NewDatasource(instanceSettings backend.DataSourceInstanceSettings) (instanc
 			return nil, fmt.Errorf("httpclient new: %w", err)
 		} else {
 			return &Datasource{
-				togglTrackClient: newTogglTrackClient(httpClient, "https://api.track.toggl.com/api/v9/", logger),
+				TogglTrackHttpClient: newTogglTrackHttpClient(httpClient, "https://api.track.toggl.com/api/v9/", logger),
 			}, nil
 		}
 	} else {
@@ -86,7 +86,7 @@ func NewDatasource(instanceSettings backend.DataSourceInstanceSettings) (instanc
 // Datasource is an example datasource which can respond to data queries, reports
 // its health and has streaming skills.
 type Datasource struct {
-	togglTrackClient *TogglTrackClient
+	TogglTrackHttpClient *TogglTrackHttpClient
 }
 
 // Dispose here tells plugin SDK that plugin wants to clean up resources when a new instance
@@ -98,7 +98,7 @@ func (d *Datasource) Dispose() {
 
 func (d *Datasource) CallResource(ctx context.Context, req *backend.CallResourceRequest, sender backend.CallResourceResponseSender) error {
 	if req.URL == "projects" {
-		resp, err := d.togglTrackClient.makeRequest(ctx, http.MethodGet, "me/projects")
+		resp, err := d.TogglTrackHttpClient.makeRequest(ctx, http.MethodGet, "me/projects")
 
 		if err != nil {
 			sender.Send(&backend.CallResourceResponse{
@@ -119,6 +119,29 @@ func (d *Datasource) CallResource(ctx context.Context, req *backend.CallResource
 		return sender.Send(&backend.CallResourceResponse{
 			Status: 200,
 			Body:   projectsJson,
+		})
+	} else if req.URL == "clients" {
+		resp, err := d.TogglTrackHttpClient.makeRequest(ctx, http.MethodGet, "me/clients")
+
+		if err != nil {
+			sender.Send(&backend.CallResourceResponse{
+				Status: 503,
+			})
+		}
+		defer resp.Body.Close()
+		var clients []TogglTrackClient
+		body, _ := io.ReadAll(resp.Body)
+		err = json.Unmarshal(body, &clients)
+		if err != nil {
+			sender.Send(&backend.CallResourceResponse{
+				Status: 503,
+			})
+		}
+
+		clientsJson, _ := json.Marshal(clients)
+		return sender.Send(&backend.CallResourceResponse{
+			Status: 200,
+			Body:   clientsJson,
 		})
 	} else {
 		return sender.Send(&backend.CallResourceResponse{
@@ -161,8 +184,14 @@ type TogglTrackTimeEntry struct {
 }
 
 type TogglTrackProject struct {
-	Id   int64  `json:id`
-	Name string `json:name`
+	Id       int64  `json:"id"`
+	Name     string `json:"name"`
+	ClientId int64  `json:"client_id"`
+}
+
+type TogglTrackClient struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 func matchesQuery(qm queryModel, entry TogglTrackTimeEntry) bool {
@@ -199,7 +228,7 @@ func (d *Datasource) query(ctx context.Context, pCtx backend.PluginContext, quer
 	////////////
 	startDate := query.TimeRange.From.Format("2006-01-02T15:04:05Z")
 	endDate := query.TimeRange.To.Format("2006-01-02T15:04:05Z")
-	resp, err := d.togglTrackClient.makeRequest(ctx, http.MethodGet, "me/time_entries?start_date="+startDate+"&end_date="+endDate)
+	resp, err := d.TogglTrackHttpClient.makeRequest(ctx, http.MethodGet, "me/time_entries?start_date="+startDate+"&end_date="+endDate)
 	if err != nil {
 		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("request error: %v", err.Error()))
 	}
@@ -253,7 +282,7 @@ func (d *Datasource) query(ctx context.Context, pCtx backend.PluginContext, quer
 // a datasource is working as expected.
 func (d *Datasource) CheckHealth(ctx context.Context, _ *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 
-	resp, err := d.togglTrackClient.makeRequest(ctx, http.MethodGet, "me")
+	resp, err := d.TogglTrackHttpClient.makeRequest(ctx, http.MethodGet, "me")
 	if err != nil {
 		return nil, fmt.Errorf("cannot make request to API: %w", err)
 	}

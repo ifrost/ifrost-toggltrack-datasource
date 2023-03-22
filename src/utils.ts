@@ -1,23 +1,34 @@
 import { DataFrame, dateTime, DateTime, DurationUnit, FieldType, MutableDataFrame, toUtc } from '@grafana/data';
-import { TogglTrackEntry, TogglTrackProject } from './types';
+import { ToggleTrackClient, TogglTrackEntry, TogglTrackProject } from './types';
 import { groupBy } from 'lodash';
 
 /**
  * Replace project_id with project name and add helper properties for duration
  */
-export function enrichRawResults(dataFrames: DataFrame[], projects: TogglTrackProject[]): MutableDataFrame[] {
+export function enrichRawResults(
+  dataFrames: DataFrame[],
+  projects: TogglTrackProject[],
+  clients: ToggleTrackClient[]
+): MutableDataFrame[] {
   return dataFrames.map((source: DataFrame) => {
-    const projectsById = groupBy(projects, 'Id');
+    const projectsById = groupBy(projects, 'id');
+    const clientsById = groupBy(clients, 'id');
     const dataFrame = new MutableDataFrame(source);
     dataFrame.addField({ name: 'project_name', type: FieldType.string });
+    dataFrame.addField({ name: 'client_id', type: FieldType.number });
+    dataFrame.addField({ name: 'client_name', type: FieldType.string });
     dataFrame.addField({ name: 'formatted_duration', type: FieldType.string });
     dataFrame.addField({ name: 'duration_hours', type: FieldType.number });
     dataFrame.addField({ name: 'duration_minutes', type: FieldType.number });
     for (let i = 0; i < dataFrame.length; i++) {
       const entry = dataFrame.get(i);
+      const project = projectsById[entry.project_id]?.[0];
+      const client = project ? clientsById[project.clientId]?.[0] : undefined;
       dataFrame.set(i, {
         ...entry,
-        project_name: projectsById[entry.project_id]?.[0]?.Name || 'unknown',
+        project_name: project?.name || 'unknown',
+        client_id: client?.id || 0,
+        client_name: client?.name || 'unknown',
         formatted_duration: toUtc(entry.duration * 1000).format('HH:mm'),
         duration_hours: entry.duration / 60 / 60,
         duration_minutes: entry.duration / 60,
@@ -83,6 +94,7 @@ export function processToEntriesList(rawDataFrames: MutableDataFrame[]): Mutable
     tableDataFrame.addField({ name: 'start', type: FieldType.time });
     tableDataFrame.addField({ name: 'end', type: FieldType.time });
     tableDataFrame.addField({ name: 'project', type: FieldType.string });
+    tableDataFrame.addField({ name: 'client', type: FieldType.string });
     tableDataFrame.addField({ name: 'description', type: FieldType.string });
     tableDataFrame.addField({ name: 'duration', type: FieldType.string });
     tableDataFrame.addField({ name: 'duration_hours', type: FieldType.number });
@@ -92,6 +104,7 @@ export function processToEntriesList(rawDataFrames: MutableDataFrame[]): Mutable
         start: raw.time,
         end: raw.time,
         project: raw.project_name,
+        client: raw.client_name,
         description: raw.description,
         duration: raw.formatted_duration,
         duration_hours: raw.duration_hours,
