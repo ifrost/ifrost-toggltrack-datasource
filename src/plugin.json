@@ -1,13 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "Toggltrack",
+  "name": "ifrost-toggltrack-datasource",
   "id": "ifrost-toggltrack-datasource",
   "metrics": true,
   "backend": true,
   "executable": "gpx_toggltrack",
   "info": {
-    "description": "Toggl track plugin for grafana",
+    "description": "Toggl Track plugin for Grafana",
     "author": {
       "name": "ifrost"
     },
